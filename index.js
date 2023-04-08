@@ -1,6 +1,4 @@
     // setup
-
-
 const data = {
     labels: generateSequence(),
     datasets: [{
@@ -46,7 +44,7 @@ options: {
 }
 };
 
-      // render init block
+// render init block
 const myChart = new Chart(
 document.getElementById('myChart'),
 config
@@ -56,37 +54,44 @@ config
 const chartVersion = document.getElementById('chartVersion');
 chartVersion.innerText = Chart.version;
 
-
+// code to generate the initial data
 function generateData(){
-    myChart.data.datasets[0].data = generateRandomNumbers();
+    const unsortedArray = generateRandomNumbers();
+    myChart.data.datasets[0].data = unsortedArray;
     myChart.update();
 
     myChart.data.labels = generateSequence();
     myChart.update();
     //console.log(myChart.data.labels)
-    const unsortedArray = [5, 2, 8, 3, 1, 9, 4, 6, 7];
+
     const sortedArray = mergeSort(unsortedArray);
     console.log("sorting successful")
     console.log(sortedArray);
+    myChart.data.datasets[0].data = sortedArray;
+    myChart.update();
 
 }
 
+// code to generate unsorted array.
 function generateRandomNumbers(){
-    y_data = [];
-    for(let i=0;i<100;i++){
-        var r = Math.floor(Math.random() * 101);;
+    let y_data = [];
+    for(let i=0;i<10;i++){
+        var r = Math.floor(Math.random() * 11);;
         y_data.push(r);
     }
     return y_data;
 }
 
+// code to generate no of elements required by the user.
 function generateSequence(){
-    x_data = [];
-    for(let i=0;i<100;i++){
+    let x_data = [];
+    for(let i=0;i<10;i++){
         x_data.push(i);
     }
     return x_data;
 }
+
+//-------------------------Merge Sort Algorithm-----------------------------
 
 function mergeSort(arr) {
     if (arr.length <= 1) {
@@ -106,6 +111,8 @@ function mergeSort(arr) {
     while (leftArr.length && rightArr.length) {
       if (leftArr[0] <= rightArr[0]) {
         resultArr.push(leftArr.shift());
+        myChart.data.datasets[0].data = sortedArray;
+        myChart.update();
       } else {
         resultArr.push(rightArr.shift());
       }
@@ -113,3 +120,5 @@ function mergeSort(arr) {
 
     return [...resultArr, ...leftArr, ...rightArr];
   }
+  //----------------------------------------------------------------------------
+
