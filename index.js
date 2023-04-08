@@ -64,19 +64,19 @@ function generateData(){
     myChart.update();
     //console.log(myChart.data.labels)
 
-    const sortedArray = mergeSort(unsortedArray);
+    const sortedArray = mergeSort(unsortedArray,0,99);
     console.log("sorting successful")
-    console.log(sortedArray);
-    myChart.data.datasets[0].data = sortedArray;
-    myChart.update();
+    console.log(unsortedArray);
+    //myChart.data.datasets[0].data = unsortedArray;
+    //myChart.update();
 
 }
 
 // code to generate unsorted array.
 function generateRandomNumbers(){
     let y_data = [];
-    for(let i=0;i<10;i++){
-        var r = Math.floor(Math.random() * 11);;
+    for(let i=0;i<100;i++){
+        var r = Math.floor(Math.random() * 101);;
         y_data.push(r);
     }
     return y_data;
@@ -85,7 +85,7 @@ function generateRandomNumbers(){
 // code to generate no of elements required by the user.
 function generateSequence(){
     let x_data = [];
-    for(let i=0;i<10;i++){
+    for(let i=0;i<100;i++){
         x_data.push(i);
     }
     return x_data;
@@ -93,32 +93,91 @@ function generateSequence(){
 
 //-------------------------Merge Sort Algorithm-----------------------------
 
-function mergeSort(arr) {
-    if (arr.length <= 1) {
-      return arr;
+function merge(arr, l, m, r)
+{
+    var n1 = m - l + 1;
+    var n2 = r - m;
+
+    // Create temp arrays
+    var L = new Array(n1);
+    var R = new Array(n2);
+
+    // Copy data to temp arrays L[] and R[]
+    for (var i = 0; i < n1; i++)
+        L[i] = arr[l + i];
+    for (var j = 0; j < n2; j++)
+        R[j] = arr[m + 1 + j];
+
+    // Merge the temp arrays back into arr[l..r]
+
+    // Initial index of first subarray
+    var i = 0;
+
+    // Initial index of second subarray
+    var j = 0;
+
+    // Initial index of merged subarray
+    var k = l;
+
+    while (i < n1 && j < n2) {
+        if (L[i] <= R[j]) {
+            arr[k] = L[i];
+            i++;
+        }
+        else {
+            arr[k] = R[j];
+            j++;
+        }
+        k++;
+        setTimeout(function(){
+            myChart.data.datasets[0].data[k] = arr[k];
+        myChart.update('none')
+          }, 2000);
+
     }
 
-    const mid = Math.floor(arr.length / 2);
-    const leftArr = arr.slice(0, mid);
-    const rightArr = arr.slice(mid);
-
-    return merge(mergeSort(leftArr), mergeSort(rightArr));
-  }
-
-  function merge(leftArr, rightArr) {
-    const resultArr = [];
-
-    while (leftArr.length && rightArr.length) {
-      if (leftArr[0] <= rightArr[0]) {
-        resultArr.push(leftArr.shift());
-        myChart.data.datasets[0].data = sortedArray;
-        myChart.update();
-      } else {
-        resultArr.push(rightArr.shift());
-      }
+    // Copy the remaining elements of
+    // L[], if there are any
+    while (i < n1) {
+        arr[k] = L[i];
+        i++;
+        k++;
+        setTimeout(function(){
+            myChart.data.datasets[0].data[k] = arr[k];
+        myChart.update('none')
+          }, 2000);
     }
 
-    return [...resultArr, ...leftArr, ...rightArr];
-  }
+    // Copy the remaining elements of
+    // R[], if there are any
+    while (j < n2) {
+        arr[k] = R[j];
+        j++;
+        k++;
+        setTimeout(function(){
+            myChart.data.datasets[0].data[k] = arr[k];
+        myChart.update('none')
+          }, 2000);
+    }
+
+}
+
+// l is for left index and r is
+// right index of the sub-array
+// of arr to be sorted */
+function mergeSort(arr,l, r){
+    if(l>=r){
+        return;//returns recursively
+    }
+    var m =l+ parseInt((r-l)/2);
+    mergeSort(arr,l,m);
+    mergeSort(arr,m+1,r);
+    merge(arr,l,m,r);
+    console.log(arr)
+    setTimeout(function(){
+        myChart.data.datasets[0].data = arr;
+    myChart.update('none')
+      }, 1000);
+}
   //----------------------------------------------------------------------------
 
