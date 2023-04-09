@@ -64,11 +64,10 @@ function generateData(){
     myChart.update();
     //console.log(myChart.data.labels)
 
-    const sortedArray = mergeSort(unsortedArray,0,99);
+    mergeSort(0,99);
     console.log("sorting successful")
-    console.log(unsortedArray);
-    //myChart.data.datasets[0].data = unsortedArray;
-    //myChart.update();
+    //console.log(sortedArray);
+    myChart.update();
 
 }
 
@@ -93,7 +92,7 @@ function generateSequence(){
 
 //-------------------------Merge Sort Algorithm-----------------------------
 
-function merge(arr, l, m, r)
+function merge(l, m, r)
 {
     var n1 = m - l + 1;
     var n2 = r - m;
@@ -104,9 +103,9 @@ function merge(arr, l, m, r)
 
     // Copy data to temp arrays L[] and R[]
     for (var i = 0; i < n1; i++)
-        L[i] = arr[l + i];
+        L[i] = myChart.data.datasets[0].data[l + i];
     for (var j = 0; j < n2; j++)
-        R[j] = arr[m + 1 + j];
+        R[j] = myChart.data.datasets[0].data[m + 1 + j];
 
     // Merge the temp arrays back into arr[l..r]
 
@@ -121,43 +120,33 @@ function merge(arr, l, m, r)
 
     while (i < n1 && j < n2) {
         if (L[i] <= R[j]) {
-            arr[k] = L[i];
+            myChart.data.datasets[0].data[k] = L[i];
             i++;
         }
         else {
-            arr[k] = R[j];
+            myChart.data.datasets[0].data[k] = R[j];
             j++;
         }
         k++;
-        setTimeout(function(){
-            myChart.data.datasets[0].data[k] = arr[k];
-        myChart.update('none')
-          }, 2000);
 
     }
 
     // Copy the remaining elements of
     // L[], if there are any
     while (i < n1) {
-        arr[k] = L[i];
+        myChart.data.datasets[0].data[k] = L[i];
         i++;
         k++;
-        setTimeout(function(){
-            myChart.data.datasets[0].data[k] = arr[k];
-        myChart.update('none')
-          }, 2000);
+
     }
 
     // Copy the remaining elements of
     // R[], if there are any
     while (j < n2) {
-        arr[k] = R[j];
+        myChart.data.datasets[0].data[k] = R[j];
         j++;
         k++;
-        setTimeout(function(){
-            myChart.data.datasets[0].data[k] = arr[k];
-        myChart.update('none')
-          }, 2000);
+
     }
 
 }
@@ -165,19 +154,15 @@ function merge(arr, l, m, r)
 // l is for left index and r is
 // right index of the sub-array
 // of arr to be sorted */
-function mergeSort(arr,l, r){
+function mergeSort(l, r){
     if(l>=r){
         return;//returns recursively
     }
     var m =l+ parseInt((r-l)/2);
-    mergeSort(arr,l,m);
-    mergeSort(arr,m+1,r);
-    merge(arr,l,m,r);
-    console.log(arr)
-    setTimeout(function(){
-        myChart.data.datasets[0].data = arr;
-    myChart.update('none')
-      }, 1000);
+    mergeSort(l,m);
+    mergeSort(m+1,r);
+    merge(l,m,r);
+    console.log(myChart.data.datasets[0].data)
 }
   //----------------------------------------------------------------------------
 
