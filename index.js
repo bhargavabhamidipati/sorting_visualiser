@@ -1,4 +1,6 @@
     // setup
+let update = [];
+
 const data = {
     labels: generateSequence(),
     datasets: [{
@@ -58,13 +60,11 @@ chartVersion.innerText = Chart.version;
 function generateData(){
     const unsortedArray = generateRandomNumbers();
     myChart.data.datasets[0].data = unsortedArray;
-    myChart.update();
-
     myChart.data.labels = generateSequence();
     myChart.update();
     //console.log(myChart.data.labels)
 
-    mergeSort(0,99);
+    mergeSort(0,999);
     console.log("sorting successful")
     //console.log(sortedArray);
     myChart.update();
@@ -74,8 +74,8 @@ function generateData(){
 // code to generate unsorted array.
 function generateRandomNumbers(){
     let y_data = [];
-    for(let i=0;i<100;i++){
-        var r = Math.floor(Math.random() * 101);;
+    for(let i=0;i<1000;i++){
+        var r = Math.floor(Math.random() * 1001);;
         y_data.push(r);
     }
     return y_data;
@@ -84,7 +84,7 @@ function generateRandomNumbers(){
 // code to generate no of elements required by the user.
 function generateSequence(){
     let x_data = [];
-    for(let i=0;i<100;i++){
+    for(let i=0;i<1000;i++){
         x_data.push(i);
     }
     return x_data;
@@ -149,6 +149,8 @@ function merge(l, m, r)
 
     }
 
+    setTimeout(myChart.update('none'),1000);
+
 }
 
 // l is for left index and r is
@@ -159,9 +161,9 @@ function mergeSort(l, r){
         return;//returns recursively
     }
     var m =l+ parseInt((r-l)/2);
-    mergeSort(l,m);
-    mergeSort(m+1,r);
-    merge(l,m,r);
+    setTimeout(mergeSort(l,m),1000);
+    setTimeout(mergeSort(m+1,r),1000);
+    setTimeout(merge(l,m,r),1000);
     console.log(myChart.data.datasets[0].data)
 }
   //----------------------------------------------------------------------------
